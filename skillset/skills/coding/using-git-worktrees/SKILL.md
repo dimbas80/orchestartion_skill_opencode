@@ -13,10 +13,10 @@ Ensure work happens in an isolated workspace. Prefer your platform's native work
 
 **Announce at start:** "I'm using the using-git-worktrees skill to set up an isolated workspace."
 
-**Hermes note (this harness):** there is no native worktree tool here — after
-Step 0 go straight to the git fallback (Step 1b). And if the working directory
-is not a git repository at all (`git rev-parse` fails), stop: the project was
-never initialized — `project-init` must run first.
+**Note for zcode / opencode:** neither harness ships a native worktree tool —
+after Step 0 go straight to the git fallback (Step 1b). And if the working
+directory is not a git repository at all (`git rev-parse` fails), stop: the
+project was never initialized — `project-init` must run first.
 
 ## Step 0: Detect Existing Isolation
 
@@ -51,16 +51,17 @@ Honor any existing declared preference without asking. If the user declines cons
 
 ## Step 1: Create Isolated Workspace
 
-**In Hermes there is exactly one mechanism: the git fallback below.** No native
-worktree tool exists (`EnterWorktree`, `/worktree` and similar belong to other
-harnesses), so `git worktree add` is the normal path here, not phantom state.
+**In zcode and opencode there is exactly one mechanism: the git fallback
+below.** No native worktree tool exists (`EnterWorktree`, `/worktree` and
+similar belong to other harnesses), so `git worktree add` is the normal path
+here, not phantom state.
 
-### 1a. Native Worktree Tools — not available in Hermes
+### 1a. Native Worktree Tools — not available in these harnesses
 
 If a harness ever offers one, it would handle placement, branch creation and
 cleanup; here it does not — skip straight to 1b.
 
-### 1b. Git Worktree (the only path in Hermes)
+### 1b. Git Worktree (the only path here)
 
 #### Directory Selection
 

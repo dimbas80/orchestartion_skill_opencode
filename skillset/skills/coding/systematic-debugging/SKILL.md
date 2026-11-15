@@ -2,11 +2,7 @@
 name: systematic-debugging
 description: "4-phase root cause debugging: understand bugs before fixing."
 version: 1.1.0
-author: Hermes Agent (adapted from obra/superpowers)
 license: MIT
-platforms: [linux, macos, windows]
-metadata:
-  hermes:
     tags: [debugging, troubleshooting, problem-solving, root-cause, investigation]
     related_skills: [test-driven-development, subagent-driven-development]
 ---
@@ -93,9 +89,9 @@ Thinking "quick fix for now, investigate later", "just try changing X", "add mul
 | **3. Hypothesis** | Ranked theories, test minimally, one variable at a time | Confirmed or new hypothesis |
 | **4. Implementation** | Regression test, fix root cause, verify | Bug resolved, all tests pass |
 
-## Hermes Agent Integration
+## Harness Integration
 
-Investigation tools: `search_files` (error strings, call tracing), `read_file` (sources with line numbers), `terminal` (tests, git history, repro), `web_search`/`web_extract` (error messages, docs). Multi-profile setup: investigation tasks go to the board — a kanban task for the profile that owns the subsystem. Solo-session delegate_task example: [references/hermes-integration.md](references/hermes-integration.md).
+Investigation tools: grep/search (error strings, call tracing), file read with line numbers (sources), shell (tests, git history, repro), web search/fetch (error messages, docs). For complex multi-component debugging, dispatch investigation subagents — see [references/subagent-dispatch.md](references/subagent-dispatch.md).
 
 ## With test-driven-development
 

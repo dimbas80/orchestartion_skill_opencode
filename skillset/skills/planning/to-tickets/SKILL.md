@@ -1,6 +1,6 @@
 ---
 name: to-tickets
-description: "Разбить план, спеку или разговор на tracer-bullet тикеты с blocking edges и опубликовать в трекер (Local Files: .scratch/<feature>/issues/NN-slug.md). Триггеры: «нарежь на тикеты», «to-tickets», «разбей на задачи». В проектах с Hermes Kanban orchestrator зеркалит тикеты в kanban-задачи; файл в .scratch/ — источник истины."
+description: "Разбить план, спеку или разговор на tracer-bullet тикеты с blocking edges и опубликовать в трекер (Local Files: .scratch/<feature>/issues/NN-slug.md). Триггеры: «нарежь на тикеты», «to-tickets», «разбей на задачи». Ведущая сессия конвейера превращает тикеты в диспатчи субагентов; файл в .scratch/ — источник истины."
 ---
 
 # To Tickets

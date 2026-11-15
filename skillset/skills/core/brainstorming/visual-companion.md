@@ -32,7 +32,7 @@ The server watches a directory for HTML files and serves the newest one to the b
 
 ## Starting a Session
 
-Script paths are relative to this skill's directory (skill_view → skill_dir):
+Script paths are relative to this skill's directory:
 you start in the project directory, so `scripts/...` alone will not resolve.
 
 ```bash
@@ -62,11 +62,11 @@ without repeating it.
 
 **Launching the server by platform:**
 
-**Hermes:**
+**Any harness (zcode / opencode / Claude Code):**
 ```bash
-# The script backgrounds the server itself; keep it alive across turns with the
-# terminal tool's background mode and read the state file on the next turn.
-terminal(background=True): bash <skill_dir>/scripts/start-server.sh --project-dir /path/to/project --open
+# The script backgrounds the server itself; run it via the shell tool in the
+# background (or with run_in_background) and read the state file on the next turn.
+bash <skill_dir>/scripts/start-server.sh --project-dir /path/to/project --open
 ```
 Then read `$STATE_DIR/server-info` for the URL and port.
 

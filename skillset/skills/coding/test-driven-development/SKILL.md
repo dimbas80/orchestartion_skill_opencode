@@ -2,13 +2,7 @@
 name: test-driven-development
 description: "TDD: enforce RED-GREEN-REFACTOR, tests before code."
 version: 1.1.0
-author: Hermes Agent (adapted from obra/superpowers)
 license: MIT
-platforms: [linux, macos, windows]
-metadata:
-  hermes:
-    tags: [testing, tdd, development, quality, red-green-refactor]
-    related_skills: [systematic-debugging, subagent-driven-development]
 ---
 
 # Test-Driven Development (TDD)
@@ -97,7 +91,7 @@ Vague name, tests mock not real code.
 **MANDATORY. Never skip.**
 
 ```bash
-# Use terminal tool to run the specific test
+# Use the shell tool to run the specific test
 pytest tests/test_feature.py::test_specific_behavior -v
 ```
 
@@ -299,46 +293,39 @@ Can't check all boxes? You skipped TDD. Start over.
 | Must mock everything | Code too coupled. Use dependency injection. |
 | Test setup huge | Extract helpers. Still complex? Simplify the design. |
 
-## Hermes Agent Integration
+## Harness Integration
 
 ### Running Tests
 
-Use the `terminal` tool to run tests at each step:
+Use the shell tool to run tests at each step:
 
-```python
+```bash
 # RED — verify failure
-terminal("pytest tests/test_feature.py::test_name -v")
+pytest tests/test_feature.py::test_name -v
 
 # GREEN — verify pass
-terminal("pytest tests/test_feature.py::test_name -v")
+pytest tests/test_feature.py::test_name -v
 
 # Full suite — verify no regressions
-terminal("pytest tests/ -q")
+pytest tests/ -q
 ```
 
-### With delegate_task (solo-session fallback)
+### With dispatches
 
-In the multi-profile setup implementation tasks are kanban tasks assigned to the
-coder profile — keep this same TDD contract in the task body. When dispatching
-in-session subagents, enforce TDD in the goal:
+When the implementation runs in a dispatched subagent, enforce this same TDD
+contract in the dispatch prompt:
 
-```python
-delegate_task(
-    goal="Implement [feature] using strict TDD",
-    context="""
-    Follow test-driven-development skill:
-    1. Write failing test FIRST
-    2. Run test to verify it fails
-    3. Write minimal code to pass
-    4. Run test to verify it passes
-    5. Refactor if needed
-    6. Commit
+```
+Implement [feature] using strict TDD:
+1. Write failing test FIRST
+2. Run test to verify it fails
+3. Write minimal code to pass
+4. Run test to verify it passes
+5. Refactor if needed
+6. Commit
 
-    Project test command: pytest tests/ -q
-    Project structure: [describe relevant files]
-    """,
-    toolsets=['terminal', 'file']
-)
+Project test command: pytest tests/ -q
+Project structure: [describe relevant files]
 ```
 
 ### With systematic-debugging

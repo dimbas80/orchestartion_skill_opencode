@@ -23,7 +23,7 @@ How to construct and tighten a red-capable loop. Read when building the Phase 1 
 
 For non-deterministic bugs, the immediate goal is a higher reproduction rate, not perfection. Run the trigger 100x, parallelize, add stress, narrow timing windows, or inject sleeps. A 50% flake is debuggable; a 1% flake usually is not.
 
-## Running the loop (Hermes: `terminal` tool)
+## Running the loop (shell)
 
 ```bash
 # Run a specific failing test
@@ -49,7 +49,7 @@ git diff
 git log -p --follow src/problematic_file.py | head -100
 ```
 
-## Tracing data flow (Hermes: `search_files`)
+## Tracing data flow (grep/search)
 
 ```python
 # Find where the function is called

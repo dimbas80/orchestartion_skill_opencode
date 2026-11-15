@@ -19,7 +19,7 @@ Check with the user that these seams match their expectations.
    In a project using the orchestration template: a feature spec goes to
    `.scratch/<feature-slug>/spec.md` (the tracker doc's convention); durable
    product-level documents (`product-spec.md`, `requirements.md`) belong in
-   `docs/product/` per the artifact policy in `.hermes/orchestration.yml`.
+   `docs/product/` per the artifact policy in `.orchestration/orchestration.yml`.
 
 <spec-template>
 

@@ -1,13 +1,15 @@
 ---
 name: git-guardrails
-description: "Настроить shell-hook Hermes (pre_tool_call), блокирующий опасные git-команды (push, reset --hard, clean -f, branch -D, checkout/restore .) до исполнения. Триггеры: «защити от git push», «git guardrails», «блокируй опасные git команды». Для шагов, которые агент может сделать сам, не вызывается."
+description: "Настроить защиту от опасных git-команд (push, reset --hard, clean -f, branch -D, checkout/restore .) до исполнения: zcode — PreToolUse hook; opencode — permission.deny. Триггеры: «защити от git push», «git guardrails», «блокируй опасные git команды». Для шагов, которые агент может сделать сам, не вызывается."
 ---
 
-# Git Guardrails (Hermes shell hooks)
+# Git Guardrails
 
-Ставит `pre_tool_call` shell-hook, который перехватывает и блокирует опасные
-git-команды до исполнения. Формат Hermes совместим с Claude Code: хук получает
-JSON в stdin (`tool_input.command`), `exit 2` = блок.
+Ставит защиту, которая перехватывает и блокирует опасные git-команды до
+исполнения. Один скрипт (`scripts/block-dangerous-git.sh`) обслуживает zcode:
+PreToolUse-хуки zcode принимают тот же stdin-JSON (`tool_input.command`),
+что и Claude Code, `exit 2` = блок. opencode хуков pre-tool не имеет — там
+эквивалент ставится deny-правилами.
 
 ## Что блокируется
 
@@ -17,81 +19,94 @@ JSON в stdin (`tool_input.command`), `exit 2` = блок.
 - `git branch -D`
 - `git checkout .` / `git restore .`
 
-При блокировке агент видит: `BLOCKED: '<команда>' matches dangerous pattern
-'<паттерн>'. The user has prevented you from doing this.`
+При блокировке (zcode) агент видит: `BLOCKED: '<команда>' matches dangerous
+pattern '<паттерн>'. The user has prevented you from doing this.`
 
 ## Ограничение v1 (осознанное)
 
-Хук вешается на tool **`terminal`** (matcher). Git, запущенный из
-`code_execution` (python-subprocess), этим хуком не ловится — как и в Claude
-Code ловился только Bash. Расширение матчера — по запросу.
+Скрипт ловит команды shell-инструмента. Git, запущенный из кода
+(python-subprocess внутри исполняемого скрипта), не ловится — как и в
+Claude Code ловился только Bash. Расширение покрытия — по запросу.
 
-## Установка
+## Установка — zcode (hook)
 
 ### 1. Скопировать скрипт
 
 ```bash
-mkdir -p ~/.hermes/agent-hooks
+mkdir -p ~/.agents/hooks
 cp <каталог_скилла>/scripts/block-dangerous-git.sh \
-   ~/.hermes/agent-hooks/block-dangerous-git.sh
-chmod +x ~/.hermes/agent-hooks/block-dangerous-git.sh
+   ~/.agents/hooks/block-dangerous-git.sh
+chmod +x ~/.agents/hooks/block-dangerous-git.sh
 ```
 
-`~/.hermes/agent-hooks/` — конвенция Hermes для shell-хуков; один скрипт
-обслуживает все проекты (профиль передаётся в payload).
+Один скрипт обслуживает все проекты.
 
-### 2. Зарегистрировать хук в config.yaml КАЖДОГО профиля
+### 2. Зарегистрировать PreToolUse-хук
 
-Хуки профильные: блокировка действует в тех профилях, чей config.yaml
-содержит блок. Для полного покрытия повторить для всех профилей
-(`$HERMES_HOME` каждого: у default-профиля обычно `~/.hermes`, у остальных `~/.hermes/profiles/<имя>`).
+В `<репо>/.zcode/config.json` (проектный scope) или
+`~/.zcode/cli/config.json` (user scope):
 
-```bash
-hermes config set -p <профиль> hooks.pre_tool_call \
-  '[{"matcher": "terminal", "command": "~/.hermes/agent-hooks/block-dangerous-git.sh", "timeout": 10, "fail_closed": true}]'
+```json
+{
+  "hooks": {
+    "enabled": true,
+    "PreToolUse": [
+      { "matcher": "Bash",
+        "hooks": [ { "command": "~/.agents/hooks/block-dangerous-git.sh", "timeout": 10 } ] }
+    ]
+  }
+}
 ```
 
-Эквивалент в config.yaml:
-
-```yaml
-hooks:
-  pre_tool_call:
-    - matcher: "terminal"
-      command: ~/.hermes/agent-hooks/block-dangerous-git.sh
-      timeout: 10
-      fail_closed: true
-```
-
-- `fail_closed: true` — обязателен для security-гейта: упавший/затайм-аутившийся
-  скрипт **блокирует** команду, а не пропускает её.
-- После правки config.yaml проверить парсинг (`hermes config get hooks`).
+- Матчер — имя shell-инструмента zcode (`Bash`).
+- `hooks.enabled: true` обязателен: хуки из конфиг-файла без него не запускаются.
+- Блокирующее поведение даёт сам скрипт (exit 2 на опасной команде);
+  доступность `fail_closed`-настройки проверь в своей версии zcode
+  (скилл `diagnosing-hooks`).
 
 ### 3. Спросить про кастомизацию
 
 Спроси пользователя, добавить/убрать паттерны из списка блокировки
 (например, разрешить `git push` в определённые ветки нельзя паттерном — это
-делается расширением скрипта). Правится копия скрипта в `agent-hooks/`.
+делается расширением скрипта). Правится копия скрипта в `~/.agents/hooks/`.
 
 ### 4. Verify
 
 ```bash
 echo '{"tool_input":{"command":"git push origin main"}}' \
-  | ~/.hermes/agent-hooks/block-dangerous-git.sh; echo "exit=$?"
+  | ~/.agents/hooks/block-dangerous-git.sh; echo "exit=$?"
 ```
 
 Ожидаемо: `BLOCKED: ...` на stderr, `exit=2`. Безопасная команда (`git status`)
-даёт `exit=0` без вывода.
+даёт `exit=0` без вывода. Затем — живая проверка в сессии: попросить агента
+выполнить `git push` и убедиться, что хук сработал.
 
-### 5. Активация и consent
+## Установка — opencode (permissions)
 
-- Хук доезжает в **новые сессии** / после рестарта gateway.
-- Консент-модель Hermes: при **первом** срабатывании пары (event, command)
-  Hermes спросит пользователя подтвердить хук (`hooks_auto_accept: false` по
-  умолчанию) — это одноразовое подтверждение на профиль.
-- `hermes hooks list` показывает зарегистрированные shell-хуки.
+В `opencode.json` (workspace) или `~/.config/opencode/opencode.json`
+(глобально) — deny-паттерны, точный список из скрипта:
+
+```json
+{
+  "permission": {
+    "deny": [
+      "bash(git push*)",
+      "bash(git reset --hard*)",
+      "bash(git clean -f*)",
+      "bash(git branch -D*)",
+      "bash(git checkout .*)",
+      "bash(git restore .*)"
+    ]
+  }
+}
+```
+
+Расширение списка — правка deny-массива. Verify: попросить агента выполнить
+`git push` — отказ по deny-правилу.
 
 ## Откат
 
-Удалить блок `hooks.pre_tool_call` из config.yaml профилей
-(`hermes config unset -p <профиль> hooks.pre_tool_call`) и скрипт из
-`~/.hermes/agent-hooks/`. Откат действует с новой сессии.
+- zcode: удалить блок `hooks` (или его PreToolUse-запись) из config.json и
+  скрипт из `~/.agents/hooks/`.
+- opencode: удалить записи из `permission.deny`.
+Откат действует с новой сессии (zcode).

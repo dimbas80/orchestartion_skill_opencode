@@ -58,7 +58,7 @@ Run `scripts/task-done PLAN_FILE N BASE -- <test command>` (the brief names it).
 
 ## Final Review
 
-Before reviewing, read [references/final-review.md](references/final-review.md) — review modes for this setup (Kanban vs autonomous; self-review via [code-reviewer.md](code-reviewer.md) without a subagent tool), re-grading by effect, fix-pass contract, verbatim ledger formats. Run `scripts/review-package PLAN_FILE MERGE_BASE HEAD` (`git merge-base main HEAD`) and review from the printed file. The gates live in the reference and are never skipped: severity labels are advice — re-grade by effect; Critical/Important → ONE TDD-verified fix pass; Minor → deferred to the ledger, never a ruling; an unfixed finding is a ledgered `Final: Ruling`; no second fix pass, no re-review dispatch.
+Before reviewing, read [references/final-review.md](references/final-review.md) — review modes for this setup (subagent dispatch vs self-review; self-review via [code-reviewer.md](code-reviewer.md) without a subagent tool), re-grading by effect, fix-pass contract, verbatim ledger formats. Run `scripts/review-package PLAN_FILE MERGE_BASE HEAD` (`git merge-base main HEAD`) and review from the printed file. The gates live in the reference and are never skipped: severity labels are advice — re-grade by effect; Critical/Important → ONE TDD-verified fix pass; Minor → deferred to the ledger, never a ruling; an unfixed finding is a ledgered `Final: Ruling`; no second fix pass, no re-review dispatch.
 
 ## Finish
 

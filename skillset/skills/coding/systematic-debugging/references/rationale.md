@@ -23,24 +23,19 @@ From debugging sessions:
 
 **No shortcuts. No guessing. Systematic always wins.**
 
-## With delegate_task (solo-session fallback)
+## With dispatches
 
-In the multi-profile setup investigation tasks go to the board — a kanban task for the profile that owns the subsystem. For in-session complex multi-component debugging, dispatch investigation subagents:
+For complex multi-component debugging, dispatch investigation subagents (report-only, no fixes):
 
-```python
-delegate_task(
-    goal="Investigate why [specific test/behavior] fails",
-    context="""
-    Follow systematic-debugging skill:
-    1. Read the error message carefully
-    2. Reproduce the issue
-    3. Trace the data flow to find root cause
-    4. Report findings — do NOT fix yet
+```
+Dispatch (investigate, do NOT fix):
+  Follow systematic-debugging skill:
+  1. Read the error message carefully
+  2. Reproduce the issue
+  3. Trace the data flow to find root cause
+  4. Report findings — do NOT fix yet
 
-    Error: [paste full error]
-    File: [path to failing code]
-    Test command: [exact command]
-    """,
-    toolsets=['terminal', 'file']
-)
+  Error: [paste full error]
+  File: [path to failing code]
+  Test command: [exact command]
 ```

@@ -14,7 +14,7 @@ Write implementation plans for an engineer who has not seen this codebase or thi
 **Context:** If the work runs in an isolated worktree, the coder session creates it with the `using-git-worktrees` skill (coding module) at execution time — the architect only plans around it.
 
 **Save plans to:** `docs/architecture/implementation-plan.md` in the repo — the
-fixed name is the architect→coder handoff contract from `.hermes/orchestration.yml`.
+fixed name is the architect→coder handoff contract from `.orchestration/orchestration.yml`.
 - (User preferences for plan location override this default.)
 
 ## Scope Check

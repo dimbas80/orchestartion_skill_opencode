@@ -66,7 +66,7 @@ Short or full, the doc has an **Approaches** part: the ways considered, what eac
 
 A plain document a talented builder in the domain could plan from without coming back to the partner: intent and why; goals/non-goals/anti-goals; constraints; approaches; their how-decisions; what's left to the builder. Small change: the same points in a line or two each, straight to the partner, no builder check.
 
-**Where it goes, and the builder check** (fresh subagent with `builder-check-prompt.md`, or a kanban task to the reviewer profile; three piles: answered / minor / theirs; one round of "theirs" questions): [references/design-doc.md](references/design-doc.md).
+**Where it goes, and the builder check** (fresh subagent with `builder-check-prompt.md`, or a reviewer-role subagent dispatch; three piles: answered / minor / theirs; one round of "theirs" questions): [references/design-doc.md](references/design-doc.md).
 
 ## After Approval: Offer the Stress-Test
 
