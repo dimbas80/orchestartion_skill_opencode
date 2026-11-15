@@ -7,7 +7,7 @@
 | Скиллы (32) | `<репо>/.agents/skills/<имя>/` — workspace scope, общий с zcode; или `~/.config/opencode/skills/` (compat: `~/.agents/skills/`) | `skillset/skills/` |
 | Субагенты architect/coder/reviewer | `<репо>/.opencode/agent/<имя>.md` с `mode: subagent` (проектные) или `~/.config/opencode/agent/<имя>.md` (глобальные) | `skillset/agents/*.md` |
 | Доктрина ведущей сессии | `.opencode/agent/build.md` — **оверрайд встроенного build** (тот же ID мержится поверх); `plan` остаётся чистым read-only режимом | `skillset/agents/session-lead.md` |
-| git-guardrails | `opencode.json` → `permission.deny` по shell-паттернам | `skillset/skills/core/git-guardrails/` |
+| git-guardrails | `opencode.json` → `permission.deny` по shell-паттернам | `skillset/skills/git-guardrails/` |
 
 ## Скиллы
 

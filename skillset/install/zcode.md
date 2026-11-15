@@ -7,7 +7,7 @@
 | Скиллы (32) | `<репо>/.agents/skills/<имя>/` — workspace scope, общий с opencode; или `~/.agents/skills/` — user scope для всех проектов | `skillset/skills/` |
 | Субагенты architect/coder/reviewer | `<репо>/.zcode/agents/<имя>.md` (проектные) или `~/.zcode/agents/<имя>.md` (глобальные) | `skillset/agents/*.md` |
 | Доктрина ведущей сессии | `<репо>/AGENTS.md` — секция оркестратора (уже в шаблоне `project-init/template/AGENTS.md`) | `skillset/agents/session-lead.md` |
-| git-guardrails | `<репо>/.zcode/config.json` → `hooks` (PreToolUse) + скрипт | `skillset/skills/core/git-guardrails/scripts/` |
+| git-guardrails | `<репо>/.zcode/config.json` → `hooks` (PreToolUse) + скрипт | `skillset/skills/git-guardrails/scripts/` |
 
 Скиллы кладутся именно в `.agents/skills/`: этот compat-путь читают и zcode, и
 opencode — одна копия обслуживает оба харнесса. Прецеденты разрешения: первый
@@ -26,10 +26,9 @@ mkdir -p ~/.agents/skills
 cp -a <набор>/skills/* ~/.agents/skills/
 ```
 
-Дискреция по модулям, как раньше по профилям, теперь по ролям: `core/` — всегда;
-`coding/` + `planning/` + `review/` — в проекты, где ведётся конвейерная работа
-(скиллы по триггерам безвредны в универсальной сессии — не сработают без
-своих триггеров).
+Структура набора плоская (`skills/<имя>/SKILL.md`) — ставится целиком;
+скиллы по триггерам безвредны в универсальной сессии: не сработают без своих
+триггеров, конвейер сами не запускают.
 
 ## Субагенты
 
@@ -62,7 +61,7 @@ cp <набор>/agents/reviewer.md   .zcode/agents/reviewer.md
 
 ```bash
 mkdir -p ~/.agents/hooks
-cp <набор>/skills/core/git-guardrails/scripts/block-dangerous-git.sh \
+cp <набор>/skills/git-guardrails/scripts/block-dangerous-git.sh \
    ~/.agents/hooks/block-dangerous-git.sh
 chmod +x ~/.agents/hooks/block-dangerous-git.sh
 ```
