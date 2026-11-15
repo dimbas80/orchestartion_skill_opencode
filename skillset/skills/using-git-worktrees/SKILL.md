@@ -164,7 +164,7 @@ Ready to implement <feature-name>
 | Excuse | Reality |
 |--------|---------|
 | "I'm obviously not in a worktree — no need to check" | Run Step 0. Harness-created isolation and submodules both fool eyeballing; the detection commands settle it. |
-| "`git worktree add` is quicker than hunting for a native tool" | In harnesses that ship a native worktree tool it owns placement, branching and cleanup. Hermes ships none, so `git worktree add` IS the normal path here — there is no phantom state to worry about. |
+| "`git worktree add` is quicker than hunting for a native tool" | In harnesses that ship a native worktree tool it owns placement, branching and cleanup. zcode and opencode ship none, so `git worktree add` IS the normal path here — there is no phantom state to worry about. |
 | "The worktree directory is surely ignored already" | Run `git check-ignore`. An unignored worktree directory commits the whole tree into the repo. |
 | "Any directory name works" | Explicit instructions beat an existing project-local directory, which beats the `.worktrees/` default. |
 | "The workspace is fresh — baseline tests can wait" | A dirty baseline makes every later failure ambiguous. Run the tests now; proceeding past failures is your human partner's call. |

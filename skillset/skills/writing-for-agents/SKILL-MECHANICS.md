@@ -12,7 +12,7 @@ opencode). Portability fields both accept:
 - `metadata: opencode/autoinvoke: false` (or `disable-model-invocation: true`)
   hides a skill from the model's list while keeping it loadable by explicit
   call — the way to say «только по явной просьбе» (grilling, summary).
-- Extra keys (`platforms`, `metadata.hermes…`) are tolerated by both, but do
+- Extra keys (`platforms`, прочие `metadata.*`) are tolerated by both, but do
   not write skills that DEPEND on them.
 
 Practical consequences:

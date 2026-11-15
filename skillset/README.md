@@ -9,9 +9,9 @@
 **Репозиторий набора:** https://github.com/dimbas80/orchestartion_skill (private) —
 отсюда `git clone` для установки на другой машине.
 
-**Происхождение:** набор перенесён с Hermes (профили + Kanban) на модель
-«ведущая сессия + субагенты» (ноябрь 2026). Baseline Hermes-версии — в
-`../source/skillset/` (не правится); история порта — в git-логах.
+**Происхождение:** набор переработан (ноябрь 2026) с моделью профилей на
+модель «ведущая сессия + субагенты». Предыдущая (baseline) версия набора — в
+`../source/skillset/` (не правится); история переработки — в git-логах.
 
 ## Источники
 
@@ -22,7 +22,7 @@
 |---|---|---|---|
 | **mattpocock/skills** | https://github.com/mattpocock/skills | `5beb35b` | grilling, domain-modeling, to-spec, to-tickets, wayfinder, code-review, pr, retro, wizard, triage, codebase-design, improve-codebase-architecture, teach, to-questionnaire, writing-for-agents, wait-what, summary (основа handoff), git-guardrails |
 | **obra/superpowers** | https://github.com/obra/superpowers | `2ce8aa1` | brainstorming, writing-plans, executing-plans, subagent-driven-development, dispatching-parallel-agents, using-git-worktrees, verification-before-completion, receiving-code-review, finishing-a-development-branch |
-| **Hermes Agent hub** | каталог скиллов Hermes (`hermes skills`) | — | test-driven-development, systematic-debugging — канонические hub-копии (богаче апстримов); spike — прототип-выброс (нужен wayfinder) |
+| **Hub-скиллы** | канонические копии из каталога скиллов исходной платформы | — | test-driven-development, systematic-debugging — канонические hub-копии (богаче апстримов); spike — прототип-выброс (нужен wayfinder) |
 | **Собственные** | — | — | project-init (bootstrap проекта + единый шаблон в `template/`), git-guardrails (скрипт + zcode-hook/opencode-permissions), summary (переименование из opencode-команды `handoff`) |
 
 Обе апстрим-коллекции распространяются по лицензии **MIT**; атрибуция сохранена
@@ -31,7 +31,7 @@
 Каталог скиллов (что делает каждый) и рабочий путь пользователя —
 в [SKILLS.md](SKILLS.md).
 
-## Архитектура (вместо профилей Hermes)
+## Архитектура
 
 **Ведущая сессия + субагенты.** Пользователь говорит с одной сессией (zcode —
 сессия по умолчанию + `AGENTS.md`; opencode — режим `build` + оверрайд
