@@ -11,7 +11,7 @@ deploy.conf
 summary.md
 workflows/
 docs/
-.hermes/
+.orchestration/
 
 # Python
 __pycache__/

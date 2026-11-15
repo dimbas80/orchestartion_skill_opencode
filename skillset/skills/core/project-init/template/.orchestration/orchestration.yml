@@ -1,0 +1,327 @@
+# Project-level orchestration policy (software and embedded projects).
+#
+# This file is project-level orchestration metadata, read by the leading
+# session (the orchestrator). Dispatching works through SUBAGENTS
+# (architect / coder / reviewer — defined as agent files of the harness),
+# not through a board or external dispatcher. The orchestrator reads this
+# file and dispatches subagent tasks per the routing policy below.
+#
+# Unified template: there is no separate software/embedded split and no
+# dedicated hardware-designer role. The ARCHITECTURE stage is owned by
+# the architect role, which covers BOTH hardware and software
+# architecture. Hardware artifacts (schematics, PCB, BOM) are produced
+# when the project's scope actually requires them.
+
+version: 2
+
+# ============================================================
+# Project
+# ============================================================
+project:
+  name: my-project
+
+# ============================================================
+# Task queue policy
+# ============================================================
+tasks:
+  queue:
+    rule: >
+      Feature specs and tickets live as local markdown files under
+      `.scratch/<feature>/` (see docs/agents/issue-tracker.md). The
+      orchestrator converts plan steps into subagent dispatches; the SDD
+      ledger (`.superpowers/sdd/<plan>/progress.md`) tracks what is
+      actually done. Files are the single source of truth.
+
+  dispatch:
+    rule: >
+      One dispatch per task, fresh context each time (that is what the
+      subagent mechanism provides). Two dispatches touching the same
+      files are serialized explicitly: dependency edge in the plan, or
+      a file allowlist in the later dispatch's body. Never dispatch two
+      implementers in parallel on overlapping files.
+
+# ============================================================
+# Workflow
+# ============================================================
+workflow:
+  entry_role: orchestrator
+  stages:
+    - discovery
+    - specification
+    - architecture   # hardware AND software: owned by architect
+    - implementation
+    - review
+    - integration
+    - merge
+
+# ============================================================
+# Roles (harness subagents)
+# ============================================================
+roles:
+  orchestrator:
+    kind: leading_session   # the session the user talks to; not a subagent
+  architect:
+    kind: subagent
+    agent_file: .zcode/agents/architect.md | .opencode/agent/architect.md
+  coder:
+    kind: subagent
+    agent_file: .zcode/agents/coder.md | .opencode/agent/coder.md
+  reviewer:
+    kind: subagent
+    agent_file: .zcode/agents/reviewer.md | .opencode/agent/reviewer.md
+
+# ============================================================
+# Routing policy
+# ============================================================
+routing:
+  DISCOVERY: orchestrator
+  SPECIFICATION: orchestrator
+  ARCHITECTURE: architect
+  IMPLEMENTATION: coder
+  REVIEW: reviewer
+  REVIEW_DECISION: orchestrator
+  INTEGRATION: orchestrator
+  MERGE: orchestrator
+
+# ============================================================
+# Workflow policy
+# ============================================================
+policy:
+  # Model Gate: перед первым диспатчем фичи оркестратор показывает карту
+  # «роль → модель» (модель читается из agent-файла субагента или из списка
+  # моделей харнесса) и получает явное утверждение пользователя. Смена
+  # модели роли по ходу — только с объявлением пользователю.
+  models_approved_before_dispatch: true
+  max_rework_iterations: 3
+  auto_merge: false
+  auto_push: false
+  architecture_before_implementation: true   # covers hardware AND software
+  review_before_release: true
+  coder_must_use_approved_architecture: true
+  reviewer_must_review_independently: true
+
+# ============================================================
+# Repository structure policy
+# ============================================================
+repository:
+  working_root: repository_root
+
+  source_code:
+    rule: place_all_production_files_in_src
+    description: >
+      All production files created for this project MUST be placed in
+      src/ — regardless of file type (source code, HTML, configuration,
+      hardware design files, etc.). Do not place production files in the
+      repository root. Create subdirectories (lib/, include/, hardware/)
+      yourself only when the project actually needs them.
+    path: src/
+
+  tests:
+    rule: follow_existing_project_structure
+    examples:
+      - tests/
+      - test/
+      - spec/
+
+  workflows:
+    purpose: orchestration_artifacts_only
+    allowed:
+      - task.md
+      - state.md
+      - implementation-report.md
+      - review.md
+    forbidden:
+      - production_source_code
+      - application_code
+      - production_tests
+      - application_configuration
+    rule: >
+      The workflows/ directory is reserved for task-specific
+      orchestration artifacts. The coder MUST NOT place production code
+      or application tests in workflows/.
+
+  new_directories:
+    rule: >
+      Before creating a new source directory, inspect the existing
+      repository structure and follow established project conventions.
+
+  src_directory:
+    required: true
+    rule: >
+      src/ exists in the template and is the single production root.
+      Do NOT pre-create lib/, include/ or other subdirectories merely
+      because a language usually has them: create them when the approved
+      architecture needs them.
+
+  hardware_scope:
+    rule: >
+      Hardware materials (docs/hardware/, hardware/schematic/,
+      hardware/pcb/, hardware/bom/, hardware/datasheets/) are created by
+      the agent only when the project has hardware scope. A pure software
+      project creates none of them.
+
+# ============================================================
+# Context policy
+# ============================================================
+context:
+  orchestrator:
+    required:
+      - project_requirements
+      - project_structure
+    optional:
+      - docs/product/product-spec.md
+      - docs/product/requirements.md
+      - docs/product/user-stories.md
+      - docs/product/decision-log.md
+      - docs/architecture/
+      - workflows/{task_id}/
+
+  architecture:
+    required:
+      - docs/product/requirements.md
+    optional:
+      - docs/product/product-spec.md
+      - docs/product/user-stories.md
+      - docs/product/decision-log.md
+      - existing_source_code
+      - existing_tests
+      - docs/hardware/          # only when the project has hardware scope
+
+  implementation:
+    required:
+      - docs/product/requirements.md
+      - docs/architecture/architecture.md
+      - docs/architecture/implementation-plan.md
+    optional:
+      - repository_source
+      - repository_tests
+      - workflows/{task_id}/task.md
+      - workflows/{task_id}/state.md
+      - docs/hardware/          # hardware design inputs, when in scope
+
+  review:
+    required:
+      - repository_diff
+      - repository_tests
+      - docs/product/requirements.md
+      - docs/architecture/architecture.md
+    optional:
+      - docs/architecture/implementation-plan.md
+      - workflows/{task_id}/implementation-report.md
+      - docs/hardware/
+
+# ============================================================
+# Artifact policy
+# ============================================================
+artifacts:
+  product:
+    root: docs/product
+    files:
+      - product-spec.md
+      - requirements.md
+      - user-stories.md
+      - decision-log.md
+
+  architecture:
+    root: docs/architecture
+    files:
+      - architecture.md
+      - implementation-plan.md
+    optional:
+      - adr/
+
+  hardware:
+    root: docs/hardware
+    rule: >
+      Optional, created only when the project has hardware scope: BOM,
+      pin maps, schematics notes. Binary design files live under
+      hardware/ (created on demand).
+
+  workflow:
+    root: workflows/{task_id}
+    files:
+      - task.md
+      - state.md
+      - implementation-report.md
+      - review.md
+    rule: >
+      Workflow artifacts describe the execution of a task. They are not a
+      substitute for source code, tests, application configuration, or
+      other project files.
+
+# ============================================================
+# Handoff policy
+# ============================================================
+handoffs:
+  orchestrator_to_architect:
+    required:
+      - docs/product/product-spec.md
+      - docs/product/requirements.md
+      - docs/product/user-stories.md
+    optional:
+      - docs/product/decision-log.md
+
+  architect_to_coder:
+    required:
+      - docs/product/requirements.md
+      - docs/architecture/architecture.md
+      - docs/architecture/implementation-plan.md
+
+  coder_to_reviewer:
+    required:
+      - workflows/{task_id}/implementation-report.md
+      - repository_diff
+      - repository_tests
+
+  reviewer_to_orchestrator:
+    required:
+      - workflows/{task_id}/review.md
+
+# ============================================================
+# Rework policy
+# ============================================================
+rework:
+  max_iterations: 3
+
+  on_changes_requested:
+    default_assign_to: coder
+    required_context:
+      - workflows/{task_id}/review.md
+      - repository_diff
+      - relevant_source_files
+      - relevant_tests
+
+  architecture_changes_requested:
+    assign_to: architect
+    required_context:
+      - workflows/{task_id}/review.md
+      - docs/architecture/architecture.md
+      - docs/architecture/implementation-plan.md
+
+  requirement_changes_requested:
+    assign_to: orchestrator
+    required_context:
+      - workflows/{task_id}/review.md
+      - docs/product/requirements.md
+      - docs/product/decision-log.md
+
+  on_max_iterations:
+    transition_to: BLOCKED
+    require_human_intervention: true
+
+# ============================================================
+# Safety policy
+# ============================================================
+safety:
+  auto_merge: false
+  auto_push: false
+
+  architecture_changes:
+    require_architect_review: true
+
+  requirement_changes:
+    require_orchestrator_review: true
+
+  release:
+    require_reviewer_pass: true
+    require_orchestrator_approval: true

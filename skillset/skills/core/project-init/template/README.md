@@ -1,6 +1,8 @@
 # Engineering Project
 
-This project is coordinated by Hermes Orchestrator.
+This project is run by the leading agent session (orchestrator); implementation,
+architecture and review roles are harness subagents (see
+`.orchestration/orchestration.yml`).
 
 ## Workflow
 
@@ -19,6 +21,7 @@ Discovery
 - Tests: `tests/`
 - Review: `docs/review/`
 - Hardware (when the project has hardware scope): `docs/hardware/`, `hardware/`
+- Orchestration policy: `.orchestration/orchestration.yml`, state snapshot: `.orchestration/STATE.md`
 
 `lib/`, `include/`, `hardware/` and similar directories are created by the
 agent only when the project actually needs them. Do not implement anything
