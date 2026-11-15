@@ -4,10 +4,11 @@ Part of subagent-driven-development. The task review reported
 spec ❌, a Critical or Important finding, or a ⚠️ item you confirmed as a real
 gap.
 
-**Kanban mode (multi-profile setup):** every round is a new kanban task for the
-coder profile carrying the brief path, the report path and the open findings;
-the report file is the memory. "Resume the original implementer" does not exist
-across profile sessions — a fresh task is the normal path there, not a fallback.
+**Dispatch mode:** every round is a fresh implementer dispatch (role coder)
+carrying the brief path, the report path and the open findings; the report
+file is the memory. Across subagent sessions "resume the original
+implementer" does not exist unless your harness supports resuming a spawned
+agent — a fresh dispatch is the normal path, not a fallback.
 
 Before the loop starts, two routes leave it immediately:
 
@@ -25,13 +26,12 @@ Before the loop starts, two routes leave it immediately:
 Everything else enters the loop. A fix round is one fix dispatch plus one
 scoped re-review. Five rounds maximum per task:
 
-**Rounds 1-3 — in-session: resume the original implementer; kanban: a fresh task.**
-In-session, send it the open findings verbatim — its context is intact. If your
-harness cannot message a live subagent (or you are in kanban mode), dispatch a
+**Rounds 1-3 — resume the original implementer if the harness allows it; otherwise a fresh dispatch.**
+When resuming is possible, send it the open findings verbatim — its context is intact. Otherwise dispatch a
 fresh implementer carrying the brief path, the report-file path, and the
 findings — the report file is the persistent memory either way.
 
-**Rounds 4-5 — reassign to a stronger profile** (one tier up; confirm with the
+**Rounds 4-5 — move up a model tier or reassign to a stronger role** (confirm with the
 human partner — see SKILL.md Model Gate and Model Selection), with the brief
 path, the report-file path, the open findings, and this framing: "A prior implementer attempted this task
 [N] times; you own it now. Read the report file for what was tried." A loop

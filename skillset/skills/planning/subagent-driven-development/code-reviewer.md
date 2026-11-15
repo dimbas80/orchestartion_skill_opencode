@@ -1,15 +1,14 @@
 # Code Reviewer Prompt Template
 
-Use this template as the body of a review task: a kanban task for the reviewer
-profile in the multi-profile setup, or an in-session subagent in a solo session.
+Use this template as the prompt of a review dispatch: a subagent of the
+reviewer role (whole-branch / final review).
 
 **Purpose:** Review completed work against requirements and code quality standards before it cascades into more work.
 
 ```
-Kanban task: board=<slug>, assignee=<reviewer profile>, title="Review code changes"
-In a solo session: in-session subagent — no model field; the model comes from
-the profile/session (see Model Gate).
-  body: |
+Dispatch a subagent of the reviewer role: title="Review code changes"; the
+model comes from the role's agent file (see Model Gate).
+  prompt: |
     You are a Senior Code Reviewer with expertise in software architecture,
     design patterns, and best practices. Your job is to review completed work
     against its plan or requirements and identify issues before they cascade.

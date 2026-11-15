@@ -65,29 +65,24 @@ Each agent gets:
 
 ### 3. Dispatch in Parallel
 
-**Model Gate first:** confirm the model map for every executor profile with the user
-(see subagent-driven-development, REQUIRED GATE) — a parallel fan-out dispatches on
+**Model Gate first:** confirm the model map for every executor role with the user
+(see subagent-driven-development, REQUIRED GATE) — a parallel fan-out runs on
 several providers at once, so an unapproved model burns tasks in bulk.
 
-**Kanban mode (primary in the multi-profile setup):** create one kanban task per
-independent domain — `board=<slug>`, assignee = the executor profile that owns
-the domain — and let the dispatcher run them concurrently (one in-progress task
-per profile). Integrate after all return. Never create two tasks that touch the
-same files.
-
-**Solo-session fallback:** issue all dispatches in the same response — they run
-in parallel:
+**Subagent fan-out:** issue all dispatches in the same response — they run
+in parallel (in harnesses without parallel dispatch, run them sequentially
+and keep each dispatch focused so context does not blur):
 
 ```text
-Task: "Fix agent-tool-abort.test.ts failures"
-Task: "Fix batch-completion-behavior.test.ts failures"
-Task: "Fix tool-approval-race-conditions.test.ts failures"
+Dispatch: "Fix agent-tool-abort.test.ts failures"
+Dispatch: "Fix batch-completion-behavior.test.ts failures"
+Dispatch: "Fix tool-approval-race-conditions.test.ts failures"
 # All three run concurrently.
 ```
 
-One dispatch per response = sequential. The rules below (focused scope,
-constraints, expected output, no shared state) are identical in both modes;
-in-session delegate_task stays the tool for quick research-style fan-out.
+One dispatch per response = sequential. Never dispatch two implementers on
+the same files; the rules below (focused scope, constraints, expected
+output, no shared state) are identical either way.
 
 ### 4. Review and Integrate
 

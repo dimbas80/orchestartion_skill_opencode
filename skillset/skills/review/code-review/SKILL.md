@@ -55,17 +55,18 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Middle Man**: a class or function that mostly just delegates onward. → cut it, call the real target direct.
 - **Refused Bequest**: a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
-### 4. Run both axes (Kanban mode primary, delegate_task fallback)
+### 4. Run both axes (parallel subagents primary, sequential fallback)
 
-**Kanban mode (multi-profile setup):** the review arrives from the Orchestrator
-as a kanban task for the reviewer profile. Run the two axes as two strictly
-separate passes in this session (Standards first, then Spec); for a large diff,
-as the Orchestrator for one review task per axis. Aggregate as in step 5. Never
-merge the lenses mid-pass.
+**Parallel subagents (primary):** dispatch the two axes as two separate
+reviewer-role subagents in the same message (one per axis), each with its
+prompt as the dispatch body. Fresh context per axis is exactly the isolation
+the two-axis design wants. Aggregate as in step 5. Never merge the lenses
+mid-pass.
 
-**Solo-session fallback:** one `delegate_task` call with both tasks runs them in
-parallel; each child gets its prompt as `context`. If dispatch is unavailable,
-run the two reviews yourself as two strictly separate passes.
+**Sequential fallback:** if the harness has no parallel dispatch (or no
+subagent mechanism at all), run the two reviews yourself as two strictly
+separate passes in this session (Standards first, then Spec), each with its
+own prompt text as the checklist.
 
 **Standards sub-agent prompt** should include:
 

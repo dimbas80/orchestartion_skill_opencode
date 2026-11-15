@@ -1,6 +1,6 @@
 ---
 name: executing-plans
-description: "Инлайн-исполнение плана в СВОЕЙ сессии (роль coder): задача за задачей по TDD-дисциплине, ledger против компакции, финальный ревью ветки. Триггеры: выбран режим native при handoff плана, «исполняй план». Пара к subagent-driven-development (диспетчерский режим orchestrator'а)."
+description: "Инлайн-исполнение плана в СВОЕЙ сессии (ты сам исполнитель): задача за задачей по TDD-дисциплине, ledger против компакции, финальный ревью ветки. Триггеры: выбран режим inline при handoff плана, «исполняй план». Пара к subagent-driven-development (диспетчерский режим ведущей сессии)."
 ---
 
 # Executing Plans
@@ -64,10 +64,10 @@ Before reviewing, read [references/final-review.md](references/final-review.md) 
 
 Every `Ruling:` line → final message "Rulings I made" (in order, each with cost if wrong); every `minor (deferred)` → "Deferred minors" — both exhaustive, the final message is the only place these reach the partner. Review clean → delete this plan's workspace (git history is the record; sibling dirs belong to other plans). Hand off with both lists, branch name, review outcome; the merge decision — finishing-a-development-branch — is the Orchestrator's call with the partner, not the implementer's.
 
-## Hermes Notes (this setup)
+## Harness Notes (this setup)
 
-- Скрипты (`task-start`, `task-done`, `sdd-workspace`, `review-package`) — через terminal (`bash scripts/...`); локальные копии скриптов subagent-driven-development (один workspace-формат).
-- Финальный ревью — по режимам из [references/final-review.md](references/final-review.md): Kanban (multi-profile) или автономный диспатч ревьюера.
+- Скрипты (`task-start`, `task-done`, `sdd-workspace`, `review-package`) — через shell (`bash scripts/...`); локальные копии скриптов subagent-driven-development (один workspace-формат).
+- Финальный ревью — по режимам из [references/final-review.md](references/final-review.md): диспатч субагента reviewer или self-review без субагентного механизма.
 
 ## Common Rationalizations
 

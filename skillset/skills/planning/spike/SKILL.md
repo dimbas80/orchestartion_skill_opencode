@@ -1,14 +1,6 @@
 ---
 name: spike
-description: "Прототип-выброс (spike): быстро проверить идею или подход до реальной сборки — работоспособность, сравнение A vs B, неизвестные. Триггеры: «прикинь прототип», «проверим, сработает ли», «spike», «сравни подходы», «возможно ли вообще», «прежде чем вкладываться». Для большого «тумана» — wayfinder; для плана внедрения — writing-plans; для одноразовых макетов UI — sketch."
-version: 1.0.0
-author: Hermes Agent (adapted from gsd-build/get-shit-done)
-license: MIT
-platforms: [linux, macos, windows]
-metadata:
-  hermes:
-    tags: [spike, prototype, experiment, feasibility, throwaway, exploration, research, planning, mvp, proof-of-concept]
-    related_skills: [sketch, subagent-driven-development]
+description: "Прототип-выброс (spike): быстро проверить идею или подход до реальной сборки — работоспособность, сравнение A vs B, неизвестные. Триггеры: «прикинь прототип», «проверим, сработает ли», «spike», «сравни подходы», «возможно ли вообще», «прежде чем вкладываться». Для большого «тумана» — wayfinder; для плана внедрения — writing-plans."
 ---
 
 # Spike
@@ -25,7 +17,7 @@ Load this when the user says things like "let me try this", "I want to see if X 
 
 ## If the user has the full GSD system installed
 
-If `gsd-spike` shows up as a sibling skill (installed via `npx get-shit-done-cc --hermes`), prefer **`gsd-spike`** when the user wants the full GSD workflow: persistent `.planning/spikes/` state, MANIFEST tracking across sessions, Given/When/Then verdict format, and commit patterns that integrate with the rest of GSD. This skill is the lightweight standalone version for users who don't have (or don't want) the full system.
+If `gsd-spike` shows up as a sibling skill, prefer **`gsd-spike`** when the user wants the full GSD workflow: persistent `.planning/spikes/` state, MANIFEST tracking across sessions, Given/When/Then verdict format, and commit patterns that integrate with the rest of GSD. This skill is the lightweight standalone version for users who don't have (or don't want) the full system.
 
 ## Core method
 
@@ -76,13 +68,13 @@ Spikes are not research-free — you research enough to pick the right approach,
 3. **Pick one.** State why. If 2+ are credible, build quick variants within the spike.
 4. **Skip research** for pure logic with no external dependencies.
 
-Use Hermes tools for the research step:
+Use the harness's tools for the research step:
 
-- `web_search("python websocket streaming libraries 2025")` — find candidates
-- `web_extract(urls=["https://websockets.readthedocs.io/..."])` — read the actual docs (returns markdown)
-- `terminal("pip show websockets | grep Version")` — check what's installed in the project's venv
+- web search (`"python websocket streaming libraries 2025"`) — find candidates
+- fetch/read the actual docs pages (returns markdown)
+- shell: `pip show websockets | grep Version` — check what's installed in the project's venv
 
-For libraries without docs pages, clone and read their `README.md` / `examples/` via `read_file`. Context7 MCP (if the user has it configured) is also a good source — `mcp_*_resolve-library-id` then `mcp_*_query-docs`.
+For libraries without docs pages, clone and read their `README.md` / `examples/`. Context7 MCP (if the user has it configured) is also a good source — `resolve-library-id` then `query-docs`.
 
 ### 4. Build
 
@@ -112,23 +104,21 @@ spikes/
 
 **Avoid** unless the spike specifically requires it: complex package management, build tools/bundlers, Docker, env files, config systems. Hardcode everything — it's a spike.
 
-**Building one spike** — a typical tool sequence:
+**Building one spike** — a typical sequence:
 
 ```
-terminal("mkdir -p spikes/001-websocket-streaming")
-write_file("spikes/001-websocket-streaming/README.md", "# 001: websocket-streaming\n\n...")
-write_file("spikes/001-websocket-streaming/main.py", "...")
-terminal("cd spikes/001-websocket-streaming && python main.py")
+mkdir -p spikes/001-websocket-streaming          (shell)
+write spikes/001-websocket-streaming/README.md   (file tool)
+write spikes/001-websocket-streaming/main.py     (file tool)
+cd spikes/001-websocket-streaming && python main.py   (shell)
 # Observe output, iterate.
 ```
 
-**Parallel comparison spikes (002a / 002b) — delegate.** When two approaches can run in parallel and both need real engineering (not 10-line prototypes), fan out. In the multi-profile setup that means one kanban task per spike for the executor profile; `delegate_task` is the solo-session fallback:
+**Parallel comparison spikes (002a / 002b) — delegate.** When two approaches can run in parallel and both need real engineering (not 10-line prototypes), fan out one implementer subagent per spike (dispatch both in the same message so they run concurrently):
 
 ```
-delegate_task(tasks=[
-    {"goal": "Build 002a-pdf-parse-pdfjs: ...", "toolsets": ["terminal", "file", "web"]},
-    {"goal": "Build 002b-pdf-parse-camelot: ...", "toolsets": ["terminal", "file", "web"]},
-])
+Dispatch 1: "Build 002a-pdf-parse-pdfjs: ..."
+Dispatch 2: "Build 002b-pdf-parse-camelot: ..."
 ```
 
 Each subagent returns its own verdict; you write the head-to-head.
@@ -194,4 +184,4 @@ Propose 2-4 candidates as Given/When/Then. Let the user pick.
 
 ## Attribution
 
-Adapted from the GSD (Get Shit Done) project's `/gsd-spike` workflow — MIT © 2025 Lex Christopherson ([gsd-build/get-shit-done](https://github.com/gsd-build/get-shit-done)). The full GSD system offers persistent spike state, MANIFEST tracking, and integration with a broader spec-driven development pipeline; install with `npx get-shit-done-cc --hermes --global`.
+Adapted from the GSD (Get Shit Done) project's `/gsd-spike` workflow — MIT © 2025 Lex Christopherson ([gsd-build/get-shit-done](https://github.com/gsd-build/get-shit-done)). The full GSD system offers persistent spike state, MANIFEST tracking, and integration with a broader spec-driven development pipeline.

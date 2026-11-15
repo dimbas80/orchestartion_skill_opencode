@@ -61,16 +61,16 @@ Publish the approved tickets. **How** depends on the tracker configured in the p
 - **Local files** → write one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
 - **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real identifiers. Use the platform's native blocking relationship where it has one; otherwise set each ticket's "Blocked by" to the blocking issues. If the source was an existing issue, make each ticket its sub-issue (tracker doc's operation). Apply the `ready-for-agent` triage label unless instructed otherwise; the tickets are agent-grabbable by construction.
 
-> **Model Gate first — REQUIRED.** Before mirroring tickets into kanban tasks,
-> confirm the model map for every executor profile with the user (profile →
-> provider/model from `config.yaml`, fallbacks for flaky providers). No dispatch
-> on unapproved models — a single task counts too. See also the REQUIRED GATE in
-> subagent-driven-development.
+> **Model Gate first — REQUIRED.** Before dispatching ticket work to executor
+> subagents, confirm the model map for every executor role with the user
+> (role → model from its agent file, fallbacks for flaky providers). No
+> dispatch on unapproved models — a single dispatch counts too. See also the
+> REQUIRED GATE in subagent-driven-development.
 
-In projects with a Hermes Kanban board (see `.hermes/orchestration.yml`), the
-Orchestrator mirrors approved tickets into kanban tasks with an explicit
-`board=<slug>` and links each task back to its ticket file; the file in
-`.scratch/` stays the source of truth.
+When the session leads the pipeline (see `.orchestration/orchestration.yml`),
+the session lead turns approved tickets into subagent dispatches in
+dependency order and links each dispatch back to its ticket file; the file
+in `.scratch/` stays the source of truth.
 
 Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
 

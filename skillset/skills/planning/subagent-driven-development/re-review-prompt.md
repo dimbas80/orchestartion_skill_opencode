@@ -8,10 +8,9 @@ new breakage. It is not a fresh review — the full review already happened.
 that the fix itself broke nothing.
 
 ```
-Kanban task (multi-profile setup): board=<slug>, assignee=reviewer profile, title="Re-review Task N fix round R"
-In a solo session (no orchestrator): in-session subagent — no model field;
-the model comes from its profile/session (see Model Gate).
-  body: |
+Dispatch a subagent of the reviewer role: title="Re-review Task N fix round R";
+the model comes from the role's agent file (see Model Gate).
+  prompt: |
     You are re-reviewing one task's fix round. A previous review produced
     findings; an implementer has attempted to fix them. Your job is to
     verdict each finding and inspect the fix diff — nothing else.
@@ -100,8 +99,6 @@ the model comes from its profile/session (see Model Gate).
 ```
 
 **Placeholders:**
-- `[MODEL]` — REQUIRED: reviewer model per SKILL.md Model Selection; scoped
-  re-reviews of small fix diffs take a cheap-to-mid tier
 - `[BRIEF_FILE]` — the task brief file (same file the implementer worked from)
 - `[FINDINGS]` — the Critical/Important findings and spec gaps from the
   previous review, copied verbatim, one per bullet
@@ -114,5 +111,4 @@ the model comes from its profile/session (see Model Gate).
 new breakage in the fix diff, out-of-scope observations, and a round verdict.
 
 - The LAST section of `review.md` MUST be a heading line, exactly one of:
-  `## Вердикт: PASS` or `## Вердикт: CHANGES_REQUESTED`. Downstream tooling
-  (wave monitors) extracts the token from this line — no other shape is parsed.
+  `## Вердикт: PASS` or `## Вердикт: CHANGES_REQUESTED`. Downstream tooling (status checks) extracts the token from this line — no other shape is parsed.

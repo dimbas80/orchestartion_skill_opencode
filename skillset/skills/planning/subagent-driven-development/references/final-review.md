@@ -7,8 +7,8 @@ The final whole-branch review gets a package too: run
 `bash <skill_dir>/scripts/review-package PLAN_FILE MERGE_BASE HEAD` (MERGE_BASE = the commit the
 branch started from, e.g. `git merge-base main HEAD`) and include the
 printed path in the final review dispatch, so the final reviewer reads
-one file instead of re-deriving the branch diff with git commands. Create the
-final-review kanban task for the reviewer profile — its model is the one
+one file instead of re-deriving the branch diff with git commands. Dispatch
+the final-review subagent of the reviewer role — its model is the one
 approved in the Model Gate — using this skill's
 [code-reviewer.md](../code-reviewer.md). Point it at
 the ledger's deferred-minor and parked lines so it can triage which must be

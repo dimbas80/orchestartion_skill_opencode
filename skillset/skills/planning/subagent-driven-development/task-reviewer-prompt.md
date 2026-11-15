@@ -8,10 +8,9 @@ code quality.
 more, nothing less) and is well-built (clean, tested, maintainable)
 
 ```
-Kanban task (multi-profile setup): board=<slug>, assignee=reviewer profile, title="Review Task N (spec + quality)"
-In a solo session (no orchestrator): in-session subagent — no model field;
-the model comes from its profile/session (see Model Gate).
-  body: |
+Dispatch a subagent of the reviewer role: title="Review Task N (spec + quality)";
+the model comes from the role's agent file (see Model Gate).
+  prompt: |
     You are reviewing one task's implementation: first whether it matches its
     requirements, then whether it is well-built. This is a task-scoped gate,
     not a merge review — a broad whole-branch review happens separately after
@@ -187,7 +186,6 @@ the model comes from its profile/session (see Model Gate).
 ```
 
 **Placeholders:**
-- `[MODEL]` — REQUIRED: reviewer model per SKILL.md Model Selection
 - `[BRIEF_FILE]` — REQUIRED: the task brief file (`bash scripts/task-brief PLAN N`
   prints the path; same file the implementer worked from)
 - `[GLOBAL_CONSTRAINTS]` — the binding requirements copied verbatim from
@@ -203,8 +201,7 @@ the model comes from its profile/session (see Model Gate).
   path it wrote; the package never enters the controller's context)
 
 - The LAST section of `review.md` MUST be a heading line, exactly one of:
-  `## Вердикт: PASS` or `## Вердикт: CHANGES_REQUESTED`. Downstream tooling
-  (wave monitors) extracts the token from this line — no other shape is parsed.
+  `## Вердикт: PASS` or `## Вердикт: CHANGES_REQUESTED`. Downstream tooling (status checks) extracts the token from this line — no other shape is parsed.
 
 **Reviewer returns:** Spec Compliance verdict (✅/❌/⚠️), Strengths, Issues
 (Critical/Important/Minor), Task quality verdict

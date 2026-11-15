@@ -25,13 +25,13 @@ If unsure — don't batch. The saving is real but bounded; a mis-batched fix loo
 
 1. **One brief, one task.** Write the batch brief as a numbered list — every item: file(s), exact change, per-item acceptance. The plan's task texts are quoted or linked, never paraphrased.
 2. **One BASE, one report, one review package** for the whole batch. Report and review contracts stay exactly as for a single task (`workflows/<task_id>/implementation-report.md`; the reviewer gets brief + report + package).
-3. **One kanban card per batch**: title names the batch (`B1`), body enumerates the items and their task ids, acceptance includes the class line — "every occurrence of this primitive in the data behaves identically" — not just item-by-item checks.
-4. **Ledger**: one line per plan task as usual; the batch card id goes in each line (`Task 3 (B1): complete …`). A crash mid-batch resumes from the ledger and the card, which holds all items.
+3. **One dispatch per batch**: title names the batch (`B1`), prompt enumerates the items and their task ids, acceptance includes the class line — "every occurrence of this primitive in the data behaves identically" — not just item-by-item checks.
+4. **Ledger**: one line per plan task as usual; the batch id goes in each line (`Task 3 (B1): complete …`). A crash mid-batch resumes from the ledger and the batch brief/report, which hold all items.
 5. **Fix loop runs on the batch**: one review verdict, one fix round for the whole batch; item-scoped findings are fixed in the same round. Never split a failed batch review into per-item re-reviews.
 
 ## Batch review
 
-One reviewer task per batch. Its checklist:
+One reviewer dispatch per batch. Its checklist:
 
 - each item against its brief text and acceptance;
 - the class line across items (identical behaviour for identical inputs, no copy-paste drift);

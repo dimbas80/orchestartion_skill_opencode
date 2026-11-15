@@ -3,10 +3,9 @@
 Use this template when dispatching an implementer subagent.
 
 ```
-Kanban task (multi-profile setup): board=<slug>, assignee=<coder profile>, title="Implement Task N: [task name]"
-In a solo session (no orchestrator): in-session subagent — no model field;
-the model comes from its profile/session (see Model Gate).
-  body: |
+Dispatch a subagent of the coder role: title="Implement Task N: [task name]";
+the model comes from the role's agent file (see Model Gate).
+  prompt: |
     You are implementing Task N: [task name]
 
     ## Task Description
