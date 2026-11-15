@@ -1,0 +1,26 @@
+# Секреты и окружение
+.env
+*.env
+!*.env.example
+
+# Локальные параметры деплоя (реальный хост/доступы)
+deploy.conf
+
+# Служебные и внутренние материалы — только локально, в публичный git не входят
+.scratch/
+summary.md
+workflows/
+docs/
+.hermes/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Инструменты
+.codegraph*/
+.superpowers/
+.worktrees/
+.DS_Store
