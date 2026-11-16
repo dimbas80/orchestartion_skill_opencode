@@ -37,7 +37,7 @@ description: "ПРИ СТАРТЕ НОВОГО проекта: скопиров�
    # zcode (проектный scope):
    <набор>/install/emit.sh zcode <корень>      # → .zcode/agents/{architect,coder,reviewer}.md
    # opencode (проектный scope):
-   <набор>/install/emit.sh opencode <корень>   # → .opencode/agent/build.md + 3 субагента
+   <набор>/install/emit.sh opencode <корень>   # → .opencode/agents/build.md + 3 субагента
    ```
 
    Если набор набора нет под рукой — скопируй тела ролей из `agents/` набора в agent-файлы харнесса вручную (frontmatter: `description` — строка `> …` тела роли; opencode — `mode: subagent`). Уже стоящие агент-файлы не перезаписывай молча: покажи diff и спроси. Скиллы (`cp -a skills/* .agents/skills/`) ставятся один раз на машину/репо — проверь их наличие (`ls .agents/skills | head`), не дублируй.

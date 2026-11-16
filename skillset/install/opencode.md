@@ -5,8 +5,8 @@
 | Компонент | Куда в opencode | Откуда в наборе |
 |---|---|---|
 | Скиллы (32) | `<репо>/.agents/skills/<имя>/` — workspace scope, общий с zcode; или `~/.config/opencode/skills/` (compat: `~/.agents/skills/`) | `skillset/skills/` |
-| Субагенты architect/coder/reviewer | `<репо>/.opencode/agent/<имя>.md` с `mode: subagent` (проектные) или `~/.config/opencode/agent/<имя>.md` (глобальные) | `skillset/agents/*.md` |
-| Доктрина ведущей сессии | `.opencode/agent/build.md` — **оверрайд встроенного build** (тот же ID мержится поверх); `plan` остаётся чистым read-only режимом | `skillset/agents/session-lead.md` |
+| Субагенты architect/coder/reviewer | `<репо>/.opencode/agents/<имя>.md` с `mode: subagent` (проектные) или `~/.config/opencode/agents/<имя>.md` (глобальные) | `skillset/agents/*.md` |
+| Доктрина ведущей сессии | `.opencode/agents/build.md` — **оверрайд встроенного build** (тот же ID мержится поверх); `plan` остаётся чистым read-only режимом | `skillset/agents/session-lead.md` |
 | git-guardrails | `opencode.json` → `permission.deny` по shell-паттернам | `skillset/skills/git-guardrails/` |
 
 ## Скиллы
@@ -31,16 +31,16 @@ metadata:
 ## Ведущая сессия: оверрайд build
 
 ```bash
-mkdir -p .opencode/agent
-# собрать из session-lead.md файл с frontmatter (см. install/emit.sh):
-emit.sh opencode   # → .emit/opencode/agent/build.md и субагенты
+# собрать из session-lead.md файлы с frontmatter (см. install/emit.sh):
+<набор>/install/emit.sh opencode <репо>   # → .opencode/agents/build.md + 3 субагента
 ```
 
-Файл `.opencode/agent/build.md`:
+Файл `.opencode/agents/build.md`:
 
 ```markdown
 ---
 description: Universal engineer; orchestrates the architect/coder/reviewer pipeline when a route requires it
+mode: primary
 ---
 <тело session-lead.md>
 ```
@@ -52,12 +52,12 @@ description: Universal engineer; orchestrates the architect/coder/reviewer pipel
 
 ```bash
 # emit.sh делает это за один проход; вручную:
-mkdir -p .opencode/agent
+mkdir -p .opencode/agents
 for role in architect coder reviewer; do
   {
     printf -- '---\ndescription: %s\nmode: subagent\n---\n\n' "$(grep -m1 '^> ' <набор>/agents/$role.md | sed 's/^> //')"
     cat <набор>/agents/$role.md
-  } > .opencode/agent/$role.md
+  } > .opencode/agents/$role.md
 done
 ```
 

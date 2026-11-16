@@ -9,10 +9,10 @@
 
 | Файл | Роль | zcode | opencode |
 |---|---|---|---|
-| `session-lead.md` | Ведущая сессия: универсал по умолчанию (solo), оркестратор конвейера — когда Routing Gate его выбрал | секция в workspace `AGENTS.md` (шаблон `project-init/template/`) | оверрайд `build`: `.opencode/agent/build.md` |
-| `architect.md` | Субагент: архитектора (софт, система, железо) | `.zcode/agents/architect.md` | `.opencode/agent/architect.md` (`mode: subagent`) |
-| `coder.md` | Субагент: разработчик (software + firmware) | `.zcode/agents/coder.md` | `.opencode/agent/coder.md` (`mode: subagent`) |
-| `reviewer.md` | Субагент: независимый ревьюер | `.zcode/agents/reviewer.md` | `.opencode/agent/reviewer.md` (`mode: subagent`) |
+| `session-lead.md` | Ведущая сессия: универсал по умолчанию (solo), оркестратор конвейера — когда Routing Gate его выбрал | секция в workspace `AGENTS.md` (шаблон `project-init/template/`) | оверрайд `build`: `.opencode/agents/build.md` |
+| `architect.md` | Субагент: архитектора (софт, система, железо) | `.zcode/agents/architect.md` | `.opencode/agents/architect.md` (`mode: subagent`) |
+| `coder.md` | Субагент: разработчик (software + firmware) | `.zcode/agents/coder.md` | `.opencode/agents/coder.md` (`mode: subagent`) |
+| `reviewer.md` | Субагент: независимый ревьюер | `.zcode/agents/reviewer.md` | `.opencode/agents/reviewer.md` (`mode: subagent`) |
 
 `session-lead.md` — НЕ субагент: все гейты набора (HARD-GATE, Routing Gate,
 Model Gate, merge-решение) требуют живого диалога с пользователем, а субагенты
@@ -33,7 +33,7 @@ Model Gate, merge-решение) требуют живого диалога с 
 - **zcode**: персона = workspace `AGENTS.md` соответствующего проекта
   (или пользовательский `~/.zcode/AGENTS.md` для постоянной, как бывший
   `default`).
-- **opencode**: персона = кастомный primary-агент (`~/.config/opencode/agent/<имя>.md`,
+- **opencode**: персона = кастомный primary-агент (`~/.config/opencode/agents/<имя>.md`,
   `mode: primary`) — переключается Tab'ом, ближайший аналог «смены профиля».
 
 Файлы в `examples/` — очищенные от механик исходной платформы (`delegate_task`, `ctx_*`)

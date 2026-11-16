@@ -38,7 +38,7 @@ Ledger: `.superpowers/sdd/<plan>/progress.md` (git-ignored; workspace printed by
 
 ## Model Gate — REQUIRED, before ANY dispatch
 
-1. Build the map: **every executor role** the plan touches → model, read from its agent file (`model` field: zcode `.zcode/agents/<role>.md`, opencode `.opencode/agent/<role>.md`) or, when unset, from the harness's model list. Resolve any user shorthand to the exact model id **in that provider's own namespace** (ids differ per provider; a wrong-namespace id fails at worker spawn).
+1. Build the map: **every executor role** the plan touches → model, read from its agent file (`model` field: zcode `.zcode/agents/<role>.md`, opencode `.opencode/agents/<role>.md`) or, when unset, from the harness's model list. Resolve any user shorthand to the exact model id **in that provider's own namespace** (ids differ per provider; a wrong-namespace id fails at worker spawn).
 2. Present the table, get explicit approval; agree the fallback for unreliable providers up front.
 3. Record the approved map in the ledger and in the first dispatch's body. To change a role's model, edit its agent file (or the per-dispatch override the harness offers) — and say so to the user; never swap silently.
 4. There is no supervisor enforcing this gate in these harnesses — it is procedural, and you are its enforcer.

@@ -35,17 +35,17 @@
 
 **Ведущая сессия + субагенты.** Пользователь говорит с одной сессией (zcode —
 сессия по умолчанию + `AGENTS.md`; opencode — режим `build` + оверрайд
-`.opencode/agent/build.md`). По умолчанию она работает **соло** — универсальный
+`.opencode/agents/build.md`). По умолчанию она работает **соло** — универсальный
 инженер. Конвейер (architect → coder → reviewer) — opt-in: Routing Gate
 предлагает путь, пользователь подтверждает; роли диспатчатся как **субагенты**
 (fresh контекст на каждую задачу):
 
 | Роль | Носитель (zcode) | Носитель (opencode) | Тело |
 |---|---|---|---|
-| orchestrator (ведущая сессия) | workspace `AGENTS.md` | `.opencode/agent/build.md` | [`agents/session-lead.md`](agents/session-lead.md) |
-| architect | `.zcode/agents/architect.md` | `.opencode/agent/architect.md` | [`agents/architect.md`](agents/architect.md) |
-| coder | `.zcode/agents/coder.md` | `.opencode/agent/coder.md` | [`agents/coder.md`](agents/coder.md) |
-| reviewer | `.zcode/agents/reviewer.md` | `.opencode/agent/reviewer.md` | [`agents/reviewer.md`](agents/reviewer.md) |
+| orchestrator (ведущая сессия) | workspace `AGENTS.md` | `.opencode/agents/build.md` | [`agents/session-lead.md`](agents/session-lead.md) |
+| architect | `.zcode/agents/architect.md` | `.opencode/agents/architect.md` | [`agents/architect.md`](agents/architect.md) |
+| coder | `.zcode/agents/coder.md` | `.opencode/agents/coder.md` | [`agents/coder.md`](agents/coder.md) |
+| reviewer | `.zcode/agents/reviewer.md` | `.opencode/agents/reviewer.md` | [`agents/reviewer.md`](agents/reviewer.md) |
 
 Персоны вне конвейера (бывшие профили `default`, `enginer`, `3dprint`) —
 паттерн «workspace-персона» в [`agents/examples/`](agents/examples/).
@@ -93,7 +93,7 @@ skillset/
 mkdir -p <repo>/.agents/skills && cp -a skills/* <repo>/.agents/skills/
 # субагенты + доктрина ведущей сессии:
 install/emit.sh zcode <repo>      # .zcode/agents/*  (+ AGENTS.md из template при project-init)
-install/emit.sh opencode <repo>   # .opencode/agent/build.md + 3 субагента
+install/emit.sh opencode <repo>   # .opencode/agents/build.md + 3 субагента
 # git-guardrails: zcode — PreToolUse hook; opencode — permission.deny (см. install/*.md)
 ```
 

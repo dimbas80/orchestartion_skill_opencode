@@ -11,7 +11,7 @@ discovers a dead provider mid-task burns the budget of the whole run.
    reviewer, architect — whoever the routing policy assigns work to) →
    model, read from the role's agent file (`model` field: zcode —
    `.zcode/agents/<role>.md` or the harness model list; opencode —
-   `.opencode/agent/<role>.md`). The reviewer is part of the map:
+   `.opencode/agents/<role>.md`). The reviewer is part of the map:
    the final whole-branch review is a capable-model job by design.
    When the user names a model in shorthand (e.g. «deepseek-flash»), resolve it
    to the exact model id from the harness's model list and state what you

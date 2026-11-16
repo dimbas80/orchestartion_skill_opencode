@@ -31,7 +31,7 @@ mkdir -p <repo>/.agents/skills && cp -a skillset/skills/* <repo>/.agents/skills/
 
 # субагенты + доктрина ведущей сессии:
 skillset/install/emit.sh zcode <repo>      # .zcode/agents/{architect,coder,reviewer}.md
-skillset/install/emit.sh opencode <repo>   # .opencode/agent/build.md + 3 субагента
+skillset/install/emit.sh opencode <repo>   # .opencode/agents/build.md + 3 субагента
 
 # новый проект (из сессии агента): «начинаем новый проект X» → скилл project-init
 ```

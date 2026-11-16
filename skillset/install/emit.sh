@@ -2,7 +2,7 @@
 # emit.sh — развернуть персоны набора в файлы харнессов.
 #
 #   ./emit.sh zcode <целевой-репо>      → .zcode/agents/{architect,coder,reviewer}.md
-#   ./emit.sh opencode <целевой-репо>   → .opencode/agent/build.md + субагенты
+#   ./emit.sh opencode <целевой-репо>   → .opencode/agents/build.md + субагенты
 #
 # Скиллы copy-командой (см. install/zcode.md / install/opencode.md); этот скрипт
 # только собирает agent-файлы: тело персоны + frontmatter с description
@@ -23,7 +23,7 @@ desc_of() {
 
 emit_opencode_agent() { # file role mode
   local src=$1 role=$2 mode=$3
-  local out="$repo/.opencode/agent/$role.md"
+  local out="$repo/.opencode/agents/$role.md"
   mkdir -p "$(dirname "$out")"
   {
     printf -- '---\ndescription: "%s"\nmode: %s\n---\n\n' "$(desc_of "$src")" "$mode"

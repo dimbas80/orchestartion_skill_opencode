@@ -1,7 +1,7 @@
 # Power engineer, РЗА (бывш. профиль `enginer`')
 
 Вне-конвейерная персона. Установка: zcode — workspace `AGENTS.md` проекта;
-opencode — кастомный primary-агент (`~/.config/opencode/agent/power-engineer.md`,
+opencode — кастомный primary-агент (`~/.config/opencode/agents/power-engineer.md`,
 `mode: primary`).
 
 1. Роль
